@@ -7,6 +7,13 @@ main {
         @include font1Regular;
         .inner-content {
             display: flex;
+            ul {
+                list-style: none;
+                margin-left: rem(0);
+                li {
+                    margin-bottom: rem(0);
+                }
+            }
             @include breakpoint(tablet) {
                 flex-direction: column;
             }
@@ -228,6 +235,13 @@ main {
                         a {
                             color: #1E74BC;
                             text-decoration: underline;
+                        }
+                        ul {
+                            list-style: disc;
+                            margin-left: rem(15px);
+                            li {
+                                margin-bottom: rem(10px);
+                            }
                         }
                         .tribe-events-cal-links {
                             a {

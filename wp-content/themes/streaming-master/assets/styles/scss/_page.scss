@@ -11,7 +11,14 @@
   }
   .inner-content {
     width: 100%;
-     padding: rem(40px 20px);
+    padding: rem(40px 20px);
+    ul {
+        list-style: disc;
+        margin-left: rem(15px);
+        li {
+            margin-bottom: rem(10px);
+        }
+    }
   }
 }
 
