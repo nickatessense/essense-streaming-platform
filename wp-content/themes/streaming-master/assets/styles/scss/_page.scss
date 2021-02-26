@@ -1,0 +1,28 @@
+/*------------------------------------*\
+#PAGE STYLES
+\*------------------------------------*/
+.content {
+  min-height: calc(100% - 182px);
+  padding-top: rem(120px);
+  margin-left: rem(250px);
+  display: flex;
+  @include breakpoint(tablet) {  
+    margin-left: 0;
+  }
+  .inner-content {
+    width: 100%;
+     padding: rem(40px 20px);
+  }
+}
+
+/*---- HOME PAGE ---- */
+body.home {
+    .content {
+        .inner-content {
+            width: 60%;  
+            @include breakpoint(tablet) {  
+               width: 100%;
+            } 
+        }
+    }
+}

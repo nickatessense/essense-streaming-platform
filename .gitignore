@@ -26,7 +26,7 @@ wp-content/*
 !wp-content/mu-plugins/
 wp-content/plugins/
 !wp-content/themes/
-#!wp-content/themes/Southern-theme/index.php
+!wp-content/themes/streaming-master/index.php
 
 # ignore these plugins
 wp-content/plugins/hello.php

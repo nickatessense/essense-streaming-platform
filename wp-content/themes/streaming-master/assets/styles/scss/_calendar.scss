@@ -1,0 +1,314 @@
+/*------------------------------------*\
+#Calendar STYLES
+\*------------------------------------*/
+
+main {
+    &#event-calendar {
+        @include font1Regular;
+        .inner-content {
+            display: flex;
+            @include breakpoint(tablet) {
+                flex-direction: column;
+            }
+            .event-calendar {
+                width: 70%;
+                @include breakpoint(tablet) {
+                    width: 100%;
+                }
+                .tribe-events-l-container {
+                    padding-top: rem(0);
+                    padding-bottom: rem(0);
+                    padding-left: rem(0);
+                    @include breakpoint(tablet) {
+                        padding-right: rem(0);
+                    }
+                    header.tribe-events-header {
+                        z-index: 5;
+                        @include font1Regular;
+                        h2.month-title {
+                            width: 100%;
+                            font-size: rem(50px);
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            color: $lightBlue;
+                            span {
+                                font-size: rem(50px);
+                                font-weight: 600;
+                                float: right;
+                                color: $darkGrey;
+                            }
+                        }
+                        .tribe-events-header__messages {
+                            display: none;
+                        }
+
+                        .datepicker {
+                            @include font1Regular;
+                            .datepicker-months {
+                                table {
+                                    .datepicker-switch, span.month {
+                                        @include font1Regular;
+                                    }
+                                    span.month.current {
+                                        background: transparent;
+                                    }
+                                    span.month.active ,span.month.active:hover {
+                                        background: $lightBlue;
+                                        color: #fff;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .tribe-events-calendar-month {
+                        .tribe-events-calendar-month__header {
+                            .tribe-events-calendar-month__header-row {
+                                padding: 3px 3px 0;
+                                background-color: $lightGrey;
+                                .tribe-events-calendar-month__header-column {
+                                    background-color: $darkGrey;
+                                    height: 100%;
+                                    border: 3px solid $lightGrey;
+                                    padding-bottom: 0;
+                                    h3 span {
+                                        text-align: center;
+                                        color: #fff;
+                                        line-height: 40px;
+                                        font-size: rem(18px);
+                                        font-weight: 600;
+                                        @include breakpoint(phone) {
+                                            font-size: rem(16px);
+                                        }
+                                    }
+                                    &:first-child, &:last-child {
+                                        background-color: $lightBlue;
+                                    }
+                                }
+                            }
+                        }
+                        .tribe-events-calendar-month__body {
+                            border: 3px solid $lightGrey;
+                            .tribe-events-calendar-month__week {
+                                border-left: none;
+                                .tribe-events-calendar-month__day {
+                                    border: 3px solid $lightGrey;
+                                    min-height: 85px;
+                                    background: #ffffff;
+                                    h3.tribe-events-calendar-month__day-date {
+                                        text-align: right;
+                                        padding: 0px 16px 8px !important;
+                                        .tribe-events-calendar-month__day-date-daynum {
+                                            color: $darkGrey;
+                                            font-size: 18px;
+                                            font-weight: 600;
+                                            a {
+                                                color: $darkGrey;
+                                                font-size: 18px;
+                                                font-weight: 600;
+                                            }
+                                        }
+                                    }
+                                    &:first-child, &:last-child {
+                                        h3.tribe-events-calendar-month__day-date {
+                                            .tribe-events-calendar-month__day-date-daynum {
+                                                color: $lightBlue;
+                                                a {
+                                                    color: $lightBlue;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    .tribe-events-calendar-month__events {
+                                        article.tribe-events-calendar-month__calendar-event {
+                                            padding: rem(0 5px 16px);
+                                            .tribe-events-calendar-month__calendar-event-details {
+                                                h3.tribe-events-calendar-month__calendar-event-title {
+                                                    a {
+                                                        font-size: rem(12px) !important;
+                                                        color: #fff;
+                                                        font-weight: 700;
+                                                        color: $darkBlue;
+                                                        width: 100%;
+                                                        line-height: 12px;
+                                                        height: auto;
+                                                        display: block;
+                                                        overflow: hidden;
+                                                        //border-radius: 30px;
+                                                        padding: rem(9px 12px);
+                                                        outline: none;
+                                                        &:hover {
+                                                            border-bottom: none !important;
+                                                        }
+                                                        &.current {
+                                                            border-bottom: 1px solid $darkBlue;
+                                                        }
+                                                        @include breakpoint(phone) {
+                                                            padding: rem(0 10px);
+                                                            text-align: center;
+                                                            line-height: 25px;
+                                                            height: 25px;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                h3 {
+                    @include font1Bold;
+                    font-size: rem(20px);
+                    line-height: 24px;
+                }
+                table.chart {
+                    @include font1Regular;
+                    margin-bottom: rem(40px);
+                    tr {
+                        border-bottom: 1px solid $grey;
+                        &:first-child {
+                            border-bottom: none;
+                            background-color: #e0e0e0;
+                        }
+                        th {
+                            @include font1Bold;
+                            padding: 4px 8px;
+                        }
+                        td {
+                            padding: 10px 8px;
+                            p:first-child, p:last-child {
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+                }
+
+            }
+            .event-posts {
+                width: 30%;
+                background: rgba(218, 223, 225, .4);
+                position: relative;
+                @include breakpoint(tablet) {
+                   /* height: 440px;
+                    max-height: 800px;*/
+                }
+                @include breakpoint(tablet) {
+                    width: 100%;
+                    margin-bottom: rem(20px);
+                }
+                .event-post {
+                    position: relative;
+                    display: none;
+                    padding: rem(40px);
+                    background: #f5f5f5;
+                    z-index: 5;
+                    height: 90%;
+                    .event-bg {
+                        width: 100%;
+                        height: 200px;
+                        display: block;
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        background-position: 50% 50%;
+                        margin-bottom: rem(30px);
+                    }
+                    .event-content {
+                        h2 {
+                            color: $darkBlue;
+                            font-size: rem(24px);
+                            line-height: 27px;
+                            margin-bottom: rem(10px);
+                        }
+                        h4 {
+                            color: $lightBlue;
+                            @include font1Bold;
+                        }
+                        a {
+                            color: #1E74BC;
+                            text-decoration: underline;
+                        }
+                        .tribe-events-cal-links {
+                            a {
+                                border: 1px solid $lightBlue;
+                                line-height: 30px;
+                                padding: 0 10px;
+                                margin-right: 10px;
+                                display: inline-block;
+                                color: $lightBlue;
+                                @include font1Bold;
+                                transition: all .5s ease-in-out;
+                                margin-bottom: rem(20px);
+                                background: #F5F5F5 !important;
+                                text-decoration: none;
+                                &:hover, &:focus {
+                                    background: $lightBlue !important;
+                                    color: #fff;
+                                }
+                            }
+                        }
+                    }
+                    .event-link {
+                        display: block;
+                        text-align: center;
+                        a {
+                            font-size: rem(24px);
+                            text-transform: uppercase;
+                            color: #fff;
+                            @include font1Bold;
+                            background: #bdbbbb;
+                            line-height: 50px;
+                            border-radius: 30px;
+                            padding: rem(0 30px);
+                            display: inline-block;
+                            margin: 0 auto;
+                            text-align: center;
+                        }
+                    }
+                }
+                .placeholder-content {
+                    position: relative;
+                    padding: rem(50px);
+                    text-align: center;
+                    .placeholder-image {
+                        display: flex;
+                        justify-content: center;
+                        width: 100%;
+                        margin-bottom: rem(30px);
+                        img {
+                            width: 50%;
+                            height: auto;
+                            @include breakpoint(tablet){
+                                width: 30%;
+                            }
+                        }
+                    }
+                    p {
+                        font-weight: 400;
+                        font-size: rem(20px);
+                    }
+                }
+            }
+        }
+    }
+}
+.tooltipster-base {
+    display: none !important;
+    background: $grey !important;
+    .tooltipster-content {
+        @include font1Bold;
+        color: #fff !important;
+    }
+}
+.tribe-common .tribe-common-a11y-hidden,
+.tribe-events-calendar-month__header-column-title-desktop {
+    display: block !important;
+    visibility: unset !important;
+}
+.tribe-events .tribe-events-view-loader, 
+.tribe-events .tribe-events-calendar-month__day-cell--mobile,
+.tribe-events-calendar-month__header-column-title-mobile,
+.tribe-events-calendar-month-mobile-events {
+    display: none !important;
+}

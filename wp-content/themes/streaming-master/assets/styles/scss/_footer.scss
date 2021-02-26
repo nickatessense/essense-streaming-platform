@@ -1,0 +1,79 @@
+/*------------------------------------*\
+#FOOTER STYLES
+\*------------------------------------*/
+
+/*
+body {
+    &.logged-in {
+    	.content{
+    		min-height: calc(100vh - 195px);
+    	}
+        
+    }
+    &.error404 {
+        &.logged-in {
+            footer {
+                position: absolute;
+                left: 0;
+                right: 0;
+                z-index: -1;
+            }
+        }
+
+    }
+}*/
+
+footer {
+    padding-left: rem(290px);
+    padding-top: rem(20px);
+    padding-bottom: rem(20px);
+    background: rgba(218,223,225,.5);
+    @include breakpoint(tablet) {
+        padding-left: rem(20px);
+    }
+    @include breakpoint(phone){
+        padding-left: 0;
+    }
+    ul {
+        display: flex;
+        align-items: center;
+        @include breakpoint(phone) {
+            flex-direction: column;
+        }
+        li {
+            color: #000;
+            border-right: 1px solid #000;
+            margin-right: rem(10px);
+            padding-right: rem(10px);
+            font-size: rem(12px);
+            @include breakpoint(phone) {
+                margin-right: 0;
+                border-right: 0;
+                padding: 0;
+                margin-bottom: rem(8px);
+            }
+            &:last-child {
+                border-right: 0;
+                margin-right: 0;
+                padding-right: 0;
+            }
+            a {
+                font-size: rem(12px);
+                color: #000;
+                text-decoration: underline;
+            }
+        }
+        .flexMe a {
+            display: flex;
+            align-items: center;
+            text-decoration: none !important;
+        }
+        .flexMe p {
+            margin: 0 5px 0 0;
+            font-size: .75rem;
+        }
+        .flexMe a img{
+            width: 20px;
+        }
+    }
+}
