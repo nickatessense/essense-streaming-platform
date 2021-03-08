@@ -173,7 +173,7 @@ header {
     width: rem(250px);
     padding-top: rem(120px);
     background: $lightBlue;
-    z-index: 10;
+    z-index: 30;
     overflow: hidden;
     @include breakpoint(tablet) {
         display: none;
