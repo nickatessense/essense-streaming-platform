@@ -26,10 +26,72 @@
 body.home {
     .content {
         .inner-content {
-            width: 60%;  
-            @include breakpoint(tablet) {  
-               width: 100%;
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            @include breakpoint(tablet) {
+                width: 100%;
             } 
+        }
+    }
+}
+
+/*---- AGENDA PAGES ---- */
+body.single-tribe_events {
+    li.menu-item-52 {
+        a {
+            color: #fff !important;
+            background: $darkBlue !important;
+        }
+    }
+    .content {
+        background-image: url(../images/agenda-bg.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        .inner-content {
+            
+            #tribe-events {
+                padding: 0 0;
+                #event-content {
+                    display: flex;
+                    flex-direction: column;
+                    .event-title {
+                        h1 {
+                            font-size: rem(48px);
+                            line-height: 58px;
+                            @include font1Black;
+                            color: $lightBlue;
+                            span {
+                              font-size: rem(28px);
+                              line-height: 38px;
+                              @include font1Regular;
+                              color: $darkBlue;
+                            }
+                            @include breakpoint(tablet) {
+                                font-size: rem(38px);
+                                line-height: 48px;
+                                span {
+                                  font-size: rem(18px);
+                                  line-height: 28px;
+                                  @include font1Regular;
+                                    color: $darkBlue;
+                                }
+                            }
+                            @include breakpoint(phone) {
+                                font-size: rem(28px);
+                                line-height: 38px;
+                            }
+                        }
+                    }
+                    .event-content {
+                        p {
+                            font-size: rem(18px);
+                            line-height: 22px;
+                            color: $darkBlue;
+                        }
+                    }
+                }
+            }
         }
     }
 }

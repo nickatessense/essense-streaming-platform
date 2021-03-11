@@ -33,15 +33,10 @@
 		</div>
 		
 	</div>
-	<?php
-		$link = get_field('link');
-		$tab = get_field('new_tab');
-	?>
-	<?php if ( $link ) :?>
+	
 	<div class="event-link">
-		<a href="<?php echo $link; ?>"<?php if ( $tab ):?> target="_blank"<?php endif; ?>>Join E-Meeting</a>
+		<a href="<?php the_permalink($post->ID); ?>">More Info</a>
 	</div>
-	<?php endif; ?>
 </div><!--.event-post -->
 <?php endwhile; ?>
 <?php wp_reset_postdata(); ?>

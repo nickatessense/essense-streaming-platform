@@ -37,7 +37,6 @@ header {
                 .logo {
                     display: flex;
                     align-items: center;
-                    justify-content: center;
                     width: rem(210px);
                     height: 100%;
                     padding: 0 20px;
@@ -96,9 +95,15 @@ header {
                             }
                         }
                         &#mobile-menu {
+                            padding-right: 15px;
                             display: none;
                             @include breakpoint(tablet) {
                                 display: block;
+                            }
+                            .hamburger {
+                                @include breakpoint(phone) {
+                                    transform: scale(.8);
+                                }
                             }
                         }
                     }

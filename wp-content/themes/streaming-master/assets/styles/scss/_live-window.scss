@@ -30,25 +30,12 @@ main#live-window {
 	    .sidebarbox {
 	        display: inline-block;
 	        width: 28%;
-	        padding: rem(20px 20px);
 	        @include breakpoint(tablet) {
 	            width: 100%;
 	        }
-	        .prompt{
-		    	text-align: center;
-			    background-color: #007dba;
-			    padding: 10px 0;	
-			    h3{
-			    	color: #fff;
-			    	font-size: 24px;
-			    	font-weight: 700;
-			    }
-			    p{
-			    	margin: 0;
-			    	color: #f5f5f5;
-			    	font-size: 0.95rem;
-			    }
-			}
+	        .inner-sidebar {
+	        	padding: rem(20px 20px);
+	        }
 			iframe {
 				height: inherit;
 				@include breakpoint(phone){
