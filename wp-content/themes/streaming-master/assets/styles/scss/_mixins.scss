@@ -276,6 +276,22 @@ h1, .h1 {
     line-height: 30px;
   }
 }
+h2, .h2 {
+  font-size: rem(40px);
+  line-height: 44px;
+  @include breakpoint(tablet) {
+    font-size: rem(26px);
+    line-height: 30px;
+  }
+  @include breakpoint(tabletSmall) {
+    font-size: rem(30px);
+    line-height: 34px;
+  }
+  @include breakpoint(phone) {
+    font-size: rem(24px);
+    line-height: 28px;
+  }
+}
 body ,html {
   @include font1Regular;
   background-color: $lightGrey;
