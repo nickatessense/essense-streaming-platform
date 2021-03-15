@@ -9,12 +9,18 @@ main#live-window {
 	    .video-embed {
 	        position: relative; 
 	        height: 0; 
-	        padding-bottom: 56.25%; 
+	        padding-bottom: 45%; 
 	        overflow: hidden;
-	        width: 100%;
+	        width: 80%;
 	        display: inline-block;
+	        margin: 0 auto;
+            @include breakpoint(desktopSmall) {
+                width: 100%;
+	        	padding-bottom: 56%; 
+            }
 	        &.sidebar-inc {
 	            width: 72%;
+	            margin: 0 0;
 	            @include breakpoint(tablet) {
 	                width: 100%;
 	            }

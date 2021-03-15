@@ -6,7 +6,8 @@
   padding-top: rem(120px);
   margin-left: rem(250px);
   display: flex;
-  @include breakpoint(tablet) {  
+  @include breakpoint(tablet) {
+    min-height: calc(100% - 238px);  
     margin-left: 0;
   }
   .inner-content {

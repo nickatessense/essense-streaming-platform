@@ -4,11 +4,11 @@
 footer {
     position: relative;
     z-index: 20;
-    padding-left: rem(290px);
+    padding-left: rem(270px);
     padding-top: rem(20px);
     padding-bottom: rem(20px);
     background: rgba(218,223,225,.5);
-    @include breakpoint(desktopSmall) {
+    @include breakpoint(tablet) {
         padding-right: rem(20px);
         padding-left: rem(20px);
     }
@@ -28,7 +28,8 @@ footer {
             margin-right: rem(10px);
             padding-right: rem(10px);
             font-size: rem(12px);
-            @include breakpoint(phone) {
+            line-height: 16px;
+            @include breakpoint(tablet) {
                 margin-right: 0;
                 border-right: 0;
                 padding: 0;
