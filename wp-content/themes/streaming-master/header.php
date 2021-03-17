@@ -93,11 +93,6 @@
 					<?php } ?>
 					</nav>
 
-					<?php if ( is_active_sidebar( 'footer-menu' ) ) : ?>
-						<nav id="footer-menu" role="navigation">
-						<?php dynamic_sidebar( 'footer-menu' ); ?>
-						</nav>
-					<?php endif; ?>
 					<nav>
 						<ul>
 							<li class="logout"><a href="<?php echo home_url(); ?>/wp-login.php?action=logout">Log Out</a></li>

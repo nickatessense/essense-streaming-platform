@@ -103,7 +103,6 @@ body.single-tribe_events {
     position: relative;
     @include breakpoint(tablet){
         display: block;
-        position: fixed;
         bottom: 0;
         width: 100%;
         z-index: 99;
