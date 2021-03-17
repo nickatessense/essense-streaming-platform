@@ -20,11 +20,30 @@
 	<?php } ?>
 	</nav>
 
-	<?php if ( is_active_sidebar( 'footer-menu' ) ) : ?>
-		<nav id="footer-menu" role="navigation">
-		<?php dynamic_sidebar( 'footer-menu' ); ?>
-		</nav>
-	<?php endif; ?>
-
+	<?php if (!is_page(16)) { ?>
+		<?php if ( is_active_sidebar( 'footer-menu' ) ) : ?>
+			<nav id="footer-menu" role="navigation">
+				<?php dynamic_sidebar( 'footer-menu' ); ?>
+			</nav>
+		<?php endif; ?>
+	<?php } else{ ?>
+			<?php if (get_field("enable_live", 16) == true){ ?>
+				<?php if ( is_active_sidebar( 'footer-menu' ) ) { ?>
+					<nav id="footer-menu" role="navigation">
+						<?php echo wp_nav_menu( array( 
+							'menu' => '4'
+						)); ?>
+					</nav>
+				<?php }
+			} else{ ?>
+				<?php if ( is_active_sidebar( 'footer-menu' ) ) { ?>
+					<nav id="footer-menu" role="navigation">
+						<?php echo wp_nav_menu( array( 
+							'menu' => '5'
+						)); ?>
+					</nav>
+			<?php } 
+		}
+	} ?>
 	</div><!-- /.inner-sidebar -->
 </div><!-- /.sidebar -->

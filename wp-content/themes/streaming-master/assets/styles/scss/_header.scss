@@ -239,6 +239,12 @@ header {
                 left: rem(20px);
                 right: rem(20px);
                 bottom: rem(40px);
+                #text-2{
+                    position: fixed;
+                    width: 25%;
+                    bottom: 0;
+                    right: 0px;
+                }
             }
         }
     }

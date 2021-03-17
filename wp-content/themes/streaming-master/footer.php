@@ -8,6 +8,21 @@
  */			
  ?>
 	<?php if (is_user_logged_in()) { ?>
+		<?php if (!is_page(16)) { ?>
+			<?php if (get_field("enable_live", 16) == true){ ?>
+				<?php if ( is_active_sidebar( 'footer-menu' ) ) { ?>
+					<nav id="footer-menu" class="tabletVideo" role="navigation">
+						<?php dynamic_sidebar( 'footer-menu' ); ?>
+					</nav>
+				<?php }
+			} else{ ?>
+				<?php if ( is_active_sidebar( 'footer-menu' ) ) { ?>
+					<nav id="footer-menu" role="navigation">
+						<?php dynamic_sidebar( 'footer-menu' ); ?>
+					</nav>
+				<?php }
+			}
+		}?>
 		<footer class="footer" role="contentinfo">
 			<ul class="menu">
 				<li>Contact Us: <a href="mailto:feedback@essensepartners.com">feedback@essensepartners.com</a></li>

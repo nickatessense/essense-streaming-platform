@@ -96,3 +96,26 @@ body.single-tribe_events {
         }
     }
 }
+
+/* --- TOP FOOTER --- */
+.tabletVideo{
+    display: none;
+    position: relative;
+    @include breakpoint(tablet){
+        display: block;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        z-index: 99;
+    }
+    #text-2{
+        max-width: 45%;
+        margin: 0 auto;
+        @include breakpoint(phone){
+            max-width: 90%;
+        }
+    }
+    #nav_menu-5{
+        display: none;
+    }
+}
