@@ -33,7 +33,7 @@
                             <p>Sorry, your entered the wrong username or password.</p> 
                         </div><!-- /.login-failed -->
                     <?php }; ?>
-                    <?php echo do_shortcode('[groups_login]');?>
+                    <?php echo do_shortcode('[groups_login redirect="/?logged=login"]');?>
                     <a href="<?php echo home_url(); ?>/wp-login.php?action=lostpassword">Forgot password?</a>
                 </div>
                 <!-- /.message-holder -->

@@ -20,6 +20,15 @@
 		<!-- Mobile Meta -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta class="foundation-mq">
+		<?php 
+		date_default_timezone_set('America/New_York');
+		session_start();  
+		if ($_GET['logged'] === 'login') {
+
+			$_SESSION['loginTime'] = date("H:i:s");
+			get_template_part('db_analytics/content', 'sessionID');
+		}
+		?>
 		
 		<!-- If Site Icon isn't set in customizer -->
 		<?php if ( ! function_exists( 'has_site_icon' ) || ! has_site_icon() ) { ?>
@@ -31,6 +40,8 @@
 		<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
 
 		<?php wp_head(); ?>
+
+		<?php get_template_part( 'db_analytics/content', 'pageview' ); ?>
 
 	</head>
 			

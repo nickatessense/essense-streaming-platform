@@ -25,6 +25,8 @@
 		}?>
 		<footer class="footer" role="contentinfo">
 			<ul class="menu">
+                <li>SESSION ID: <?php echo session_id(); ?></li>
+                <li>SESSION Login Time: <?php echo $_SESSION['loginTime']; ?></li>
 				<li>Contact Us: <a href="mailto:feedback@essensepartners.com">feedback@essensepartners.com</a></li>
 				<li>&copy;<?php echo date('Y'); ?> <?php bloginfo('name'); ?>. - All Rights Reserved</li>
 				<li class="flexMe">
