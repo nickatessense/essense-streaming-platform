@@ -24,7 +24,7 @@ function essense_partners_update_video_percentage_table(){
     $user_id = get_current_user_id();
     $session_id = wp_get_session_token();
     $today = date("Y-m-d");
-    $table_name = $wpdb->prefix . 'analytics_video_percentage';
+    $table_name = 'analytics_video_time_watched';
     $video_title = $_POST['videoTitle'];
 
     // Cleans up title to only allow alphanumeric
@@ -34,6 +34,21 @@ function essense_partners_update_video_percentage_table(){
     $timeSpentOnVideoInSeconds= $_POST['time'];
 
     $referrer_link = wp_get_referer();
+
+    // If table does not exist, create it
+    maybe_create_table( $table_name, "
+        CREATE TABLE `analytics_video_time_watched` 
+        (
+            `id` int(11) NOT NULL,
+            `user_id` int(11) NOT NULL,
+            `video_title` text NOT NULL,
+            `date` date NOT NULL,
+            `time` time NOT NULL,
+            `session_id` text NOT NULL,
+            `update_count` int(11) NOT NULL,
+            `site_url` text NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;" 
+    );
 
     $result = $wpdb->get_results ( "
         SELECT * 

@@ -160,132 +160,140 @@ Documentation: https://developers.google.com/youtube/iframe_api_reference
 
 // This code loads the IFrame Player API code asynchronously.
 
-var videoSrc = jQuery('#essense-partners-youtube-vid').data('vid-src');
 
-var videoId = getYoutubeVideoID(videoSrc); 
-
-var tag = document.createElement('script');
-
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-// This function creates an <iframe> (and YouTube player)
-// after the API code downloads.
-var player;
-function onYouTubeIframeAPIReady() {
-  player = new YT.Player('essense-partners-youtube-vid', {
-    height: '100%',
-    width: '100%',
-    videoId: videoId,
-    playerVars: {
-      'playsinline': 1
-    },
-    events: {
-      'onReady': onPlayerReady,
-      'onStateChange': onPlayerStateChange
-    }
-  });
-}
-
-// The API will call this function when the video player is ready.
-var videoTitle;
-function onPlayerReady(event) {
-  event.target.playVideo()
-
-  // Code below retrieves video title from video id with youtube api
-  var url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id="+videoId+"&key=AIzaSyC7EJZQYfWUPbBRujQ88GUFOPetS7ekN7k"; 
-  getJSON(url,function(err, data) {
-
-    if (err !== null) {
-    } else {
-      videoTitle = data.items[0].snippet.title;
-    }
-  });
-
-}
-
-// Call YT API to get title of video from ID
-var getJSON = function(url, callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', url, true);
-  xhr.responseType = 'json';
-  xhr.onload = function() {
-    var status = xhr.status;
-    if (status === 200) {
-      callback(null, xhr.response);
-    } else {
-      callback(status, xhr.response);
-    }
-  };
-  xhr.send();
-};
+// If the following id exists run the code
 
 
-// Simple function to get youtube video id from url
-function getYoutubeVideoID(url){
-  var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-  var match = url.match(regExp);
-  return (match&&match[7].length==11)? match[7] : false;
-}
+if(jQuery('#essense-partners-youtube-vid').length != 0){
 
-// The API calls this function when the player's state changes.
-function onPlayerStateChange(event) {
+  var videoSrc = jQuery('#essense-partners-youtube-vid').data('vid-src');
 
-  var eventState = event.data;
+  var videoId = getYoutubeVideoID(videoSrc); 
 
-  if(eventState == -1){ // -1 unstarted
+  var tag = document.createElement('script');
 
-  }else if(eventState == 0){ // 0 done
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    clearInterval(videoInterval);
+  // This function creates an <iframe> (and YouTube player)
+  // after the API code downloads.
+  var player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('essense-partners-youtube-vid', {
+      height: '100%',
+      width: '100%',
+      videoId: videoId,
+      playerVars: {
+        'playsinline': 1
+      },
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
 
-  }else if(eventState == 1){ // 1 playing
+  // The API will call this function when the video player is ready.
+  var videoTitle;
+  function onPlayerReady(event) {
+    event.target.playVideo()
 
-    startVideoCounter();
+    // Code below retrieves video title from video id with youtube api
+    var url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id="+videoId+"&key=AIzaSyC7EJZQYfWUPbBRujQ88GUFOPetS7ekN7k"; 
+    getJSON(url,function(err, data) {
 
-  }else if(eventState == 2){ // 2 paused
-
-    clearInterval(videoInterval);
-
-  }else if(eventState == 3){ // 3 bufferring
-
-  }else if(eventState == 5){ // 5 video cued
+      if (err !== null) {
+      } else {
+        videoTitle = data.items[0].snippet.title;
+      }
+    });
 
   }
 
-}
+  // Call YT API to get title of video from ID
+  var getJSON = function(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function() {
+      var status = xhr.status;
+      if (status === 200) {
+        callback(null, xhr.response);
+      } else {
+        callback(status, xhr.response);
+      }
+    };
+    xhr.send();
+  };
 
-/*---------------------------------
-Code for tracking user time spent on video. 
-Dependent on Youtube Iframe API
-----------------------------------*/
 
-var videoInterval;
-var videoTimer = 0; // in seconds
+  // Simple function to get youtube video id from url
+  function getYoutubeVideoID(url){
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var match = url.match(regExp);
+    return (match&&match[7].length==11)? match[7] : false;
+  }
 
-// Will update videoTimer by 1 second every second
-function startVideoCounter(){ videoInterval = setInterval(function(){ videoTimer += 1; }, 1000);}
+  // The API calls this function when the player's state changes.
+  function onPlayerStateChange(event) {
 
-// Function to update backend sql with time spent on video
-function updateTimeSpentOnVid(){
-  let data = {
-    'action': 'time_spent_on_vid',
-    'time': videoTimer,
-    'videoTitle': videoTitle
-  }; 
+    var eventState = event.data;
 
-  jQuery.ajax({
-    type : "POST",
-    dataType : "json",
-    url : wp_data.ajax_url,
-    data : data,
-    success: function(response) {
-        
-    },
-    error: function(response){
+    if(eventState == -1){ // -1 unstarted
+
+    }else if(eventState == 0){ // 0 done
+
+      clearInterval(videoInterval);
+
+    }else if(eventState == 1){ // 1 playing
+
+      startVideoCounter();
+
+    }else if(eventState == 2){ // 2 paused
+
+      clearInterval(videoInterval);
+
+    }else if(eventState == 3){ // 3 bufferring
+
+    }else if(eventState == 5){ // 5 video cued
+
     }
-  });
+
+  }
+
+  /*---------------------------------
+  Code for tracking user time spent on video. 
+  Dependent on Youtube Iframe API
+  ----------------------------------*/
+
+  var videoInterval;
+  var videoTimer = 0; // in seconds
+
+  // Will update videoTimer by 1 second every second
+  function startVideoCounter(){ videoInterval = setInterval(function(){ videoTimer += 1; }, 1000);}
+
+  // Function to update backend sql with time spent on video
+  function updateTimeSpentOnVid(){
+    let data = {
+      'action': 'time_spent_on_vid',
+      'time': videoTimer,
+      'videoTitle': videoTitle
+    }; 
+
+    jQuery.ajax({
+      type : "POST",
+      dataType : "json",
+      url : wp_data.ajax_url,
+      data : data,
+      success: function(response) {
+          
+      },
+      error: function(response){
+      }
+    });
+
+  }
 
 }
 
@@ -298,8 +306,12 @@ window.onbeforeunload = function(){
   // updates database with time spent on page
   updateTimeSpentOnPage();
 
-  // updates database with time spent watching video
-  updateTimeSpentOnVid();
+  if(jQuery('#essense-partners-youtube-vid').length != 0){
+
+    // updates database with time spent watching video
+    updateTimeSpentOnVid();
+
+  }
   
 }
 
