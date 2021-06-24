@@ -28,6 +28,16 @@ require_once(get_template_directory().'/functions/page-navi.php');
 // Adds support for multiple languages
 require_once(get_template_directory().'/functions/translation/translation.php'); 
 
+
+// Helper functions for analytics 
+require_once(get_template_directory().'/functions/analytics/db_analytics_helper_functions.php'); 
+
+// Functions for tracking user time spent on page
+require_once(get_template_directory().'/functions/analytics/db_analytics_user_page_time_tracker.php'); 
+
+// Functions for tracking video watched percentage
+require_once(get_template_directory().'/functions/analytics/db_analytics_video_tracking.php'); 
+
 // Adds site styles to the WordPress editor
 // require_once(get_template_directory().'/functions/editor-styles.php'); 
 

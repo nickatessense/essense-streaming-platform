@@ -12,5 +12,11 @@ function site_scripts() {
     if ( is_singular() AND comments_open() AND (get_option('thread_comments') == 1)) {
       wp_enqueue_script( 'comment-reply' );
     }
+
+    // localizes script.js
+    wp_localize_script('site-js', 'wp_data', [
+      'ajax_url' => admin_url( 'admin-ajax.php' )
+    ]);
+
 }
 add_action('wp_enqueue_scripts', 'site_scripts', 999);
