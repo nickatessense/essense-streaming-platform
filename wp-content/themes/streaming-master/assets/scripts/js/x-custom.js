@@ -163,8 +163,7 @@ Documentation: https://developers.google.com/youtube/iframe_api_reference
 
 // If the following id exists run the code
 
-
-if(jQuery('#essense-partners-youtube-vid').length != 0){
+if(jQuery('#essense-partners-youtube-vid').length !== 0){
 
   var videoSrc = jQuery('#essense-partners-youtube-vid').data('vid-src');
 
@@ -172,13 +171,20 @@ if(jQuery('#essense-partners-youtube-vid').length != 0){
 
   var tag = document.createElement('script');
 
+  var videoTitle;
+
+  var player; // yt player 
+
+  var videoInterval;
+
+  var videoTimer = 0; // in seconds
+
   tag.src = "https://www.youtube.com/iframe_api";
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
   // This function creates an <iframe> (and YouTube player)
   // after the API code downloads.
-  var player;
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('essense-partners-youtube-vid', {
       height: '100%',
@@ -195,7 +201,6 @@ if(jQuery('#essense-partners-youtube-vid').length != 0){
   }
 
   // The API will call this function when the video player is ready.
-  var videoTitle;
   function onPlayerReady(event) {
     event.target.playVideo()
 
@@ -209,30 +214,6 @@ if(jQuery('#essense-partners-youtube-vid').length != 0){
       }
     });
 
-  }
-
-  // Call YT API to get title of video from ID
-  var getJSON = function(url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.responseType = 'json';
-    xhr.onload = function() {
-      var status = xhr.status;
-      if (status === 200) {
-        callback(null, xhr.response);
-      } else {
-        callback(status, xhr.response);
-      }
-    };
-    xhr.send();
-  };
-
-
-  // Simple function to get youtube video id from url
-  function getYoutubeVideoID(url){
-    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    var match = url.match(regExp);
-    return (match&&match[7].length==11)? match[7] : false;
   }
 
   // The API calls this function when the player's state changes.
@@ -267,14 +248,11 @@ if(jQuery('#essense-partners-youtube-vid').length != 0){
   Dependent on Youtube Iframe API
   ----------------------------------*/
 
-  var videoInterval;
-  var videoTimer = 0; // in seconds
-
   // Will update videoTimer by 1 second every second
   function startVideoCounter(){ videoInterval = setInterval(function(){ videoTimer += 1; }, 1000);}
 
   // Function to update backend sql with time spent on video
-  function updateTimeSpentOnVid(){
+  var updateTimeSpentOnVid = function (){
     let data = {
       'action': 'time_spent_on_vid',
       'time': videoTimer,
@@ -287,12 +265,36 @@ if(jQuery('#essense-partners-youtube-vid').length != 0){
       url : wp_data.ajax_url,
       data : data,
       success: function(response) {
-          
+          console.log("success");
       },
       error: function(response){
+        console.log(response);
       }
     });
 
+  }
+
+   // Call YT API to get title of video from ID
+  var getJSON = function(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function() {
+      var status = xhr.status;
+      if (status === 200) {
+        callback(null, xhr.response);
+      } else {
+        callback(status, xhr.response);
+      }
+    };
+    xhr.send();
+  };
+
+  // Simple function to get youtube video id from url
+  function getYoutubeVideoID(url){
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var match = url.match(regExp);
+    return (match&&match[7].length==11)? match[7] : false;
   }
 
 }

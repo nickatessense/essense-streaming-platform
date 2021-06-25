@@ -5,9 +5,7 @@
  */
 function essense_partners_youtube_video_shortcode($attrs){
 
-    $content = "<h1>Hello World!</h1>";
-
-    $content .= "<div id='essense-partners-youtube-vid' data-vid-src='".$attrs['youtube_url']."'></div>";
+    $content = "<div id='essense-partners-youtube-vid' data-vid-src='".$attrs['youtube_url']."'></div>";
 
     return $content;
 }
@@ -24,7 +22,7 @@ function essense_partners_update_video_percentage_table(){
     $user_id = get_current_user_id();
     $session_id = wp_get_session_token();
     $today = date("Y-m-d");
-    $table_name = 'analytics_video_time_watched';
+    $table_name = 'analytics_video_time_tracker';
     $video_title = $_POST['videoTitle'];
 
     // Cleans up title to only allow alphanumeric
@@ -37,16 +35,17 @@ function essense_partners_update_video_percentage_table(){
 
     // If table does not exist, create it
     maybe_create_table( $table_name, "
-        CREATE TABLE `analytics_video_time_watched` 
+        CREATE TABLE `$table_name` 
         (
-            `id` int(11) NOT NULL,
+            `id` int(11) NOT NULL AUTO_INCREMENT,
             `user_id` int(11) NOT NULL,
             `video_title` text NOT NULL,
             `date` date NOT NULL,
             `time` time NOT NULL,
             `session_id` text NOT NULL,
             `update_count` int(11) NOT NULL,
-            `site_url` text NOT NULL
+            `site_url` text NOT NULL,
+            PRIMARY KEY (id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;" 
     );
 
