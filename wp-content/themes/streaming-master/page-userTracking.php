@@ -1,4 +1,57 @@
-<?php get_header(); /*Template Name: User Tracking Page*/ ?>
+<?php 
+get_header(); /*Template Name: User Tracking Page*/ 
+
+require_once(get_template_directory() . '/functions/analytics/page_functions/userTracking_helper_functions.php');
+
+/**
+ * Prepares $dateQuery variable to filter out data by specific date or date range 
+ * Otherwise query will be empty string and allow SQL query to show all dates
+ */
+if (checkDateFormat($eventDate)) { // if date is of format "Y-m-d", then user wants specific date
+	$dateQuery = "WHERE date = '$eventDate'";
+}else if(!empty($eventDate)){ 
+	// if date is not specified format above and isn't empty we'll use strtotime to interpret date
+	// Then provide a range for the interpretted date to today
+	$date = str_replace('_', " ", $eventDate);
+	$date = date("Y-m-d",strtotime($date)); 
+	$today = date("Y-m-d");
+	$dateQuery = "WHERE date BETWEEN '$date' AND '$today'";
+}else{ // otherwise date query will be empty and allow sql query to show all dates
+	$dateQuery = '';
+}
+
+$requestedUserId = $_GET['user'];
+
+/**
+ * Joins dateQuery and appends user query to $additionalQuery
+ */
+if( !empty($dateQuery) && !empty($requestedUserId) ){ // if date and user are specified
+	
+	// Searches by dateQuery and user id
+	$additionalQuery = $dateQuery . " AND user_id = '$requestedUserId'";
+
+}else if (empty($dateQuery) && !empty($requestedUserId)) { // If only user is specified
+	
+	$additionalQuery = "WHERE user_id = '$requestedUserId'";
+
+}else if( !empty($dateQuery) && empty($requestedUserId) ){ // only date is specified
+	
+	$additionalQuery = $dateQuery;
+
+}else{
+	$additionalQuery = '';
+}
+
+
+// Retrieves data from database 
+$eventDate = $_GET['eventDate'];
+$pageViews = getPageViews($additionalQuery);
+$downloads = getDownloads($additionalQuery);
+$calendarDownloads = getCalendarDownloads($additionalQuery);
+$averageVideoTimes = getAverageUserWatchTime($additionalQuery);
+
+
+?>
 	
 	<?php if(current_user_can('administrator')) { ?>
 		<div class="content" id="userTracking">
@@ -9,53 +62,52 @@
 						<p>Here we have all the content that we have stored for each user. Please review and check what the users are doing on the site.</p>
 					</div>
 					<div class="right">
-						<h2>Total Users Visits</h2>
-						<?php
-							$mysqli = new mysqli("localhost","root","root","streamingplatform");
-
-							// Perform query
-							if ($result = $mysqli -> query("SELECT COUNT(DISTINCT user_ID) FROM userViewed")) {
-								$count = $result->num_rows;
-							  	$result -> free_result();
-							}
-
-							$mysqli -> close();
-						?>
-						<p><?php echo $count; ?></p>
+						<h2>Total Unique Users Visits</h2>
+						<p><?php echo getTotalUniqueUserVisits($dateQuery); ?></p>
+						<h2>Average User Watch Time</h2>
+						<p><?php echo $averageVideoTimes['all']; ?></p>
 					</div>
 				</div>
 				<div class="dateRange">
 					<h2>Events:</h2>
 					<div class="events">
-						<div class="btn">
-							<a href=""><p>Event 1</p></a>
-						</div>
-						<div class="btn">
-							<a href=""><p>Event 2</p></a>
-						</div>
+						<p>Get data by specific date</p>
+						<form method="get">
+							<input type="date" value="<?php echo $eventDate ?>" name="eventDate">
+							<input type="submit" value="Get Data">
+						</form>
 					</div>
 					
 					<h2>Date Range:</h2>
 					<div class="ranges">
 						<div class="btn">
-							<a href=""><p>Today</p></a>
+							<a href="./?eventDate=today"><p>Today</p></a>
 						</div>
 						<div class="btn">
-							<a href=""><p>Yesterday</p></a>
+							<a href="./?eventDate=yesterday"><p>Yesterday</p></a>
 						</div>
 						<div class="btn">
-							<a href=""><p>Last Week</p></a>
+							<a href="./?eventDate=-1_week"><p>Last Week</p></a>
 						</div>
 						<div class="btn">
-							<a href=""><p>Last Month</p></a>
+							<a href="./?eventDate=-1_month"><p>Last Month</p></a>
 						</div>
 						<div class="btn">
-							<a href=""><p>Last 3 Months</p></a>
+							<a href="./?eventDate=-3_months"><p>Last 3 Months</p></a>
 						</div>
 						<div class="btn">
-							<a href=""><p>Last Year</p></a>
+							<a href="./?eventDate=-1_year"><p>Last Year</p></a>
 						</div>
 					</div>
+
+					<div style="margin-bottom: 2em;">
+						<form method="get">
+							<h2>Search by specific user</h2>
+							<?php wp_dropdown_users(['selected' => $requestedUserId]); ?>
+							<input type="submit" value="Get Data">
+						</form>
+					</div>
+
 				</div>
 				<div class="general">
 					<div class="item">
@@ -65,30 +117,23 @@
 								<h4>Title</h4>
 								<h4>Count</h4>
 							</div>
-						<?php
-							$conn = new mysqli("localhost","root","root","streamingplatform");
-
-							$sql = "SELECT page_ID, COUNT(page_ID) as c FROM userViewed GROUP BY page_ID ORDER BY COUNT(page_ID) DESC";
-							$result = $conn->query($sql);
-
-
-							if ($result->num_rows > 0) {
-							  // output data of each row
-							  while($row = $result->fetch_assoc()) {
-							  	$title = get_the_title($row["page_ID"]);
-							  	$count = $row["c"];?>
-							    
-							    <div class="element">
-							    	<p><?php echo $title ?></p>
-							    	<p><?php echo $count ?></p>
+						<?php 
+						if (count($pageViews) > 0) {
+							foreach($pageViews as $pageView){
+								$titleId = $pageView->page_ID;
+								$pageVisits = $pageView->pageVisits;
+								?>
+								<div class="element">
+							    	<p><?php echo get_the_title($titleId) ?></p>
+							    	<p><?php echo $pageVisits ?></p>
 							    </div>
-							  <?php }?>
-							</div>
-							<?php } else {
-							  echo "0 results";
+								<?php
 							}
-							$conn -> close();
-						?>
+						}else{
+							echo "0 results";
+						}?>
+
+							</div>
 					</div>
 					<div class="item">
 						<h3>Documents Downloaded</h3>
@@ -97,35 +142,25 @@
 								<h4>File Name</h4>
 								<h4>Count</h4>
 							</div>
-						<?php
-							$conn = new mysqli("localhost","root","root","streamingplatform");
+							<?php
+								if (count($downloads) > 0) {
+									foreach($downloads as $download){
+										$title = $download->fileName;
+										$count = $download->downloadCount;
 
-							// Check connection
-							if ($conn->connect_error) {
-							  die("Connection failed: " . $conn->connect_error);
-							}
+										?>
+										<div class="element">
+									    	<p><?php echo $title ?></p>
+									    	<p><?php echo $count ?></p>
+									    </div>
+										<?php
 
-							$sql = "SELECT fileName, COUNT(fileName) as c FROM userDownload GROUP BY fileName ORDER BY COUNT(fileName) DESC";
-							$result = $conn->query($sql);
-
-
-							if ($result->num_rows > 0) {
-							  // output data of each row
-							  while($row = $result->fetch_assoc()) {
-							  	$title = $row["fileName"];
-							  	$count = $row["c"];?>
-							    
-							    <div class="element">
-							    	<p><?php echo $title ?></p>
-							    	<p><?php echo $count ?></p>
-							    </div>
-							  <?php }?>
-							</div>
-							<?php } else {
-							  echo "0 results";
-							}
-							$conn -> close();
-						?>
+									}
+								}else{
+									echo "0 results";
+								}
+							?>
+						</div>
 					</div>
 					<div class="item">
 						<h3>Calendar Invite Downloaded</h3>
@@ -134,36 +169,53 @@
 								<h4>Event Name</h4>
 								<h4>Count</h4>
 							</div>
-						<?php
-							$conn = new mysqli("localhost","root","root","streamingplatform");
 
-							// Check connection
-							if ($conn->connect_error) {
-							  die("Connection failed: " . $conn->connect_error);
-							}
+							<?php
+								if (count($calendarDownloads) > 0) {
+									foreach($calendarDownloads as $calendarDownload){
+										$title = $calendarDownload->eventName;
+										$count = $calendarDownload->count;
 
-							$sql = "SELECT eventName, COUNT(eventName) as c FROM userCalendarDownload GROUP BY eventName ORDER BY COUNT(eventName) DESC";
-							$result = $conn->query($sql);
+										?>
+										<div class="element">
+									    	<p><?php echo $title ?></p>
+									    	<p><?php echo $count ?></p>
+									    </div>
+										<?php
 
-
-							if ($result->num_rows > 0) {
-							  // output data of each row
-							  while($row = $result->fetch_assoc()) {
-							  	$name = $row["eventName"];
-							  	$count = $row["c"];?>
-							    
-							    <div class="element">
-							    	<p><?php echo $name ?></p>
-							    	<p><?php echo $count ?></p>
-							    </div>
-							  <?php } ?>
+									}
+								}else{
+									echo "0 results";
+								}
+							?>
+						</div>
+					</div>
+					<div class="item">
+						<h3>Average Video Watch Time</h3>
+						<div class="graph">
+							<div class="top">
+								<h4>Video Title</h4>
+								<h4>Average Time</h4>
 							</div>
-							<?php }else {
-							  echo "0 results";?>
-							</div>
-							<?php }
-							$conn -> close();
-						?>
+
+							<?php
+								unset($averageVideoTimes['all']); // already being displayed
+
+								if (!empty($averageVideoTimes) && count($averageVideoTimes) > 0) {
+									foreach($averageVideoTimes as $title => $averageVideoTime){
+										?>
+										<div class="element">
+									    	<p><?php echo $title ?></p>
+									    	<p><?php echo $averageVideoTime ?></p>
+									    </div>
+										<?php
+
+									}
+								}else{
+									echo "0 results";
+								}
+							?>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -67,17 +67,14 @@ function essense_partners_update_video_percentage_table(){
 
        $result = $wpdb->update( $table_name,
             [
-                'user_id' => $user_id,
                 'video_title' => $video_title,
-                'date' => $today,
                 'time' => $updatedTime,
-                'session_ID' => $session_id,
-                'update_count' => $result[0]->update_count + 1,
-                'site_url' => $referrer_link
+                'update_count' => $result[0]->update_count + 1
             ],
             [
                 'user_id' => $user_id,
                 'date' => $today,
+                'video_title' => $video_title,
                 'session_ID' => $session_id,
                 'site_url' => $referrer_link
 
@@ -98,6 +95,8 @@ function essense_partners_update_video_percentage_table(){
             ],
         );
     }
+
+    $wpdb->close();
 
     wp_die();
 

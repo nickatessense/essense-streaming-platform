@@ -44,3 +44,13 @@ function maybe_create_table( $table_name, $create_ddl ) {
 
     return false;
 }
+
+/**
+ * Given a date, passed as first parameter, and format as second paramter
+ * This function checks to see if the date matches the format
+ */
+function checkDateFormat($date, $format = 'Y-m-d')
+{
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) === $date;
+}

@@ -202,17 +202,9 @@ if(jQuery('#essense-partners-youtube-vid').length !== 0){
 
   // The API will call this function when the video player is ready.
   function onPlayerReady(event) {
-    event.target.playVideo()
+    event.target.playVideo();
 
-    // Code below retrieves video title from video id with youtube api
-    var url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id="+videoId+"&key=AIzaSyC7EJZQYfWUPbBRujQ88GUFOPetS7ekN7k"; 
-    getJSON(url,function(err, data) {
-
-      if (err !== null) {
-      } else {
-        videoTitle = data.items[0].snippet.title;
-      }
-    });
+    videoTitle = player.getVideoData().title;
 
   }
 
@@ -265,10 +257,8 @@ if(jQuery('#essense-partners-youtube-vid').length !== 0){
       url : wp_data.ajax_url,
       data : data,
       success: function(response) {
-          console.log("success");
       },
       error: function(response){
-        console.log(response);
       }
     });
 
