@@ -25,9 +25,18 @@ function essense_partners_update_video_percentage_table(){
     $table_name = 'analytics_video_time_tracker';
     $video_title = $_POST['videoTitle'];
 
+    $videoDuration = round($_POST['videoDuration']);
+
+    $videoUrl = $_POST['videoUrl'];
+
     // Cleans up title to only allow alphanumeric
     $video_title = preg_replace("/[^A-Za-z0-9]/", ' ', $video_title);
     $video_title = preg_replace("/\s+/", ' ', $video_title);
+
+    if (empty($video_title)) {
+        echo 'No title';
+        wp_die();
+    }
 
     $timeSpentOnVideoInSeconds= $_POST['time'];
 
@@ -41,10 +50,12 @@ function essense_partners_update_video_percentage_table(){
             `user_id` int(11) NOT NULL,
             `video_title` text NOT NULL,
             `date` date NOT NULL,
-            `time` time NOT NULL,
+            `seconds_spent_on_vid` int(11) NOT NULL,
+            `video_duration_seconds` int(11) NOT NULL,
             `session_id` text NOT NULL,
             `update_count` int(11) NOT NULL,
             `site_url` text NOT NULL,
+            `video_url` text NOT NULL,
             PRIMARY KEY (id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;" 
     );
@@ -60,16 +71,17 @@ function essense_partners_update_video_percentage_table(){
         ORDER BY id DESC LIMIT 1
     ");
 
-    if (!empty($result)) {
-        $lastTimeRecordedInSeconds = seconds_from_time($result[0]->time);
+    if (!empty($result) && count($result) == 1) {
+        $lastTimeRecordedInSeconds = $result[0]->seconds_spent_on_vid;
         $lastTimeRecordedInSecond = $lastTimeRecordedInSeconds + $timeSpentOnVideoInSeconds;
-        $updatedTime = gmdate("H:i:s", $lastTimeRecordedInSecond);
 
-       $result = $wpdb->update( $table_name,
+        $result = $wpdb->update( $table_name,
             [
                 'video_title' => $video_title,
-                'time' => $updatedTime,
-                'update_count' => $result[0]->update_count + 1
+                'seconds_spent_on_vid' => $lastTimeRecordedInSecond,
+                'video_duration_seconds' => $videoDuration,
+                'video_url' => $videoUrl,
+                'update_count' => $result[0]->update_count + 1,
             ],
             [
                 'user_id' => $user_id,
@@ -88,10 +100,12 @@ function essense_partners_update_video_percentage_table(){
                 'user_id' => $user_id,
                 'video_title' => $video_title,
                 'date' => $today,
-                'time' => gmdate("H:i:s", $timeSpentOnVideoInSeconds),
+                'seconds_spent_on_vid' => $timeSpentOnVideoInSeconds,
+                'video_duration_seconds' => $videoDuration,
                 'session_ID' => $session_id,
                 'update_count' => 1,
-                'site_url' => $referrer_link
+                'site_url' => $referrer_link,
+                'video_url' => $videoUrl,
             ],
         );
     }

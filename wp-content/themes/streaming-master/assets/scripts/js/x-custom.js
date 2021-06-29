@@ -173,6 +173,8 @@ if(jQuery('#essense-partners-youtube-vid').length !== 0){
 
   var videoTitle;
 
+  var videoTotalDuration;
+
   var player; // yt player 
 
   var videoInterval;
@@ -196,6 +198,9 @@ if(jQuery('#essense-partners-youtube-vid').length !== 0){
       events: {
         'onReady': onPlayerReady,
         'onStateChange': onPlayerStateChange
+      },
+      playerVars: { 
+        'controls': 0,
       }
     });
   }
@@ -248,7 +253,9 @@ if(jQuery('#essense-partners-youtube-vid').length !== 0){
     let data = {
       'action': 'time_spent_on_vid',
       'time': videoTimer,
-      'videoTitle': videoTitle
+      'videoTitle': videoTitle,
+      'videoDuration': player.getDuration(),
+      'videoUrl': player.getVideoUrl()
     }; 
 
     jQuery.ajax({
@@ -257,8 +264,10 @@ if(jQuery('#essense-partners-youtube-vid').length !== 0){
       url : wp_data.ajax_url,
       data : data,
       success: function(response) {
+        console.log(response);
       },
       error: function(response){
+        console.log(response.responseText);
       }
     });
 

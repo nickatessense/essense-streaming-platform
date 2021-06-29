@@ -30,7 +30,7 @@ if( !empty($dateQuery) && !empty($requestedUserId) ){ // if date and user are sp
 	// Searches by dateQuery and user id
 	$additionalQuery = $dateQuery . " AND user_id = '$requestedUserId'";
 
-}else if (empty($dateQuery) && !empty($requestedUserId)) { // If only user is specified
+}else if (empty($dateQuery) && !empty($requestedUserId) && is_int($requestedUserId)) { // If only user is specified
 	
 	$additionalQuery = "WHERE user_id = '$requestedUserId'";
 
@@ -50,24 +50,22 @@ $downloads = getDownloads($additionalQuery);
 $calendarDownloads = getCalendarDownloads($additionalQuery);
 $averageVideoTimes = getAverageUserWatchTime($additionalQuery);
 
-
 ?>
 	
 	<?php if(current_user_can('administrator')) { ?>
+
 		<div class="content" id="userTracking">
 			<div class="inner-content">
 				<div class="heading">
-					<div class="left">
-						<h1>Welcome to the Dashboard</h1>
-						<p>Here we have all the content that we have stored for each user. Please review and check what the users are doing on the site.</p>
-					</div>
-					<div class="right">
-						<h2>Total Unique Users Visits</h2>
-						<p><?php echo getTotalUniqueUserVisits($dateQuery); ?></p>
-						<h2>Average User Watch Time</h2>
-						<p><?php echo $averageVideoTimes['all']; ?></p>
-					</div>
+				<div class="left">
+					<h1>Welcome to the Dashboard</h1>
+					<p>Where you can keep an eye on trending content, user engagement and key customer activities.</p>
 				</div>
+				<div class="right">
+					<h2>Average User watch time</h2>
+					<p><?php echo $averageVideoTime ?></p>
+				</div>
+			</div>
 				<div class="dateRange">
 					<h2>Events:</h2>
 					<div class="events">
@@ -102,11 +100,15 @@ $averageVideoTimes = getAverageUserWatchTime($additionalQuery);
 
 					<div style="margin-bottom: 2em;">
 						<form method="get">
-							<h2>Search by specific user</h2>
+							<h2>Search by users</h2>
 							<?php wp_dropdown_users(['selected' => $requestedUserId]); ?>
 							<input type="submit" value="Get Data">
 						</form>
+						<a href="/user-data">
+							<button style="padding:.5em 1em; margin-top: 1em;">See all user data</button>
+						</a>
 					</div>
+
 
 				</div>
 				<div class="general">
