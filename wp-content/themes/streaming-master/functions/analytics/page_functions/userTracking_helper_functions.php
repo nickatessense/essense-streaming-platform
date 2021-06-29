@@ -83,7 +83,7 @@ function getAverageUserWatchTime($query = ''){
 
 	global $wpdb;
 	$sql = "
-		SELECT video_title, GROUP_CONCAT(time) as time
+		SELECT video_title, GROUP_CONCAT(seconds_spent_on_vid) as time
 		FROM analytics_video_time_tracker
 		$query
 		GROUP BY video_title
@@ -107,10 +107,9 @@ function getAverageUserWatchTime($query = ''){
 		$averageTime = 0; // Will keep track of single video average time
 
 		foreach($times as $time){
-			$timeInSeconds = seconds_from_time($time);
-			$averageTime += $timeInSeconds;
 			$videoCount += 1;
-			$allVideosAverageTime += $timeInSeconds;
+			$averageTime += $time;
+			$allVideosAverageTime += $time;
 		}
 
 		$averageTime = round($averageTime / count($times));

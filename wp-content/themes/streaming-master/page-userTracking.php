@@ -50,6 +50,8 @@ $downloads = getDownloads($additionalQuery);
 $calendarDownloads = getCalendarDownloads($additionalQuery);
 $averageVideoTimes = getAverageUserWatchTime($additionalQuery);
 
+$averageVideoTime = $averageVideoTimes['all'];
+
 ?>
 	
 	<?php if(current_user_can('administrator')) { ?>
